@@ -27,7 +27,7 @@ The social network is where users can share their thoughts, react to friends’ 
 # Instructions
 
 1. Download and/or clone the repository
-2. npm install
+2. Install dependencies using npm install
 3. Start and Stop Server
 4. Direct to the local live version to view: http://localhost:3001/
 
