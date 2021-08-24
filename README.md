@@ -28,7 +28,7 @@ The social network is where users can share their thoughts, react to friends’ 
 
 1. Download and/or clone the repository
 2. npm install
-3. Start and Stop MySQL Server
+3. Start and Stop Server
 4. Direct to the local live version to view: http://localhost:3001/
 
 
