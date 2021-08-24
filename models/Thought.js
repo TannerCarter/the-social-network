@@ -4,7 +4,6 @@ const moment = require("moment");
 
 const ReactionSchema = new Schema(
   {
-    // set custom id to avoid confusion with parent comment _id
     reactionId: {
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId(),
@@ -12,11 +11,14 @@ const ReactionSchema = new Schema(
     reactionBody: {
       type: String,
       required: true,
-      trim: true,
-      minlength: 1,
-      maxlength: 280,
+      minLength: 1,
+      maxLength: 280,
     },
     username: {
+      type: String,
+      required: true,
+    },
+    userId: {
       type: String,
       required: true,
     },
@@ -26,35 +28,6 @@ const ReactionSchema = new Schema(
       get: (createdAtVal) =>
         moment(createdAtVal).format("MMM DD, YYYY [at] hh:mm a"),
     },
-  },
-  {
-    toJSON: {
-      getters: true,
-    },
-  }
-);
-//Start thoughtSchema
-
-const ThoughtSchema = new Schema(
-  {
-    thoughtText: {
-      type: String,
-      required: true,
-      minlength: 1,
-      maxlength: 280,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      get: (createdAtVal) =>
-        moment(createdAtVal).format("MMM DD, YYYY [at] hh:mm a"),
-    },
-    username: {
-      type: String,
-      required: true,
-      ref: "User",
-    },
-    reactions: [ReactionSchema],
   },
   {
     toJSON: {
@@ -65,11 +38,43 @@ const ThoughtSchema = new Schema(
   }
 );
 
-const Thought = model("Thought", ThoughtSchema);
+const ThoughtSchema = new Schema(
+  {
+    thoughtText: {
+      type: String,
+      required: true,
+      minLength: 1,
+      maxLength: 280,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (createdAtVal) =>
+        moment(createdAtVal).format("MMM DD, YYYY [at] hh:mm a"),
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    reactions: [ReactionSchema],
+    userId: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    toJSON: {
+      virtuals: true,
+      getters: true,
+    },
+    id: false,
+  }
+);
 
-// get total count of friends on retrieval
 ThoughtSchema.virtual("reactionCount").get(function () {
   return this.reactions.length;
 });
+
+const Thought = model("Thought", ThoughtSchema);
 
 module.exports = Thought;
